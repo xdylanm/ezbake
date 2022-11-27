@@ -50,9 +50,9 @@ ReflowPhase reflow_profile[] = {
 ReflowPhase reflow_profile[] = {
   ReflowPhase("preheat", ReflowPhase::Ramp, 50,  150, 100),  
   ReflowPhase("soak",    ReflowPhase::Hold, 150, 175, 90),
-  ReflowPhase("ramp",    ReflowPhase::Ramp, 175, 220, 40),
-  ReflowPhase("reflow",  ReflowPhase::Peak, 220, 250, 30),
-  ReflowPhase("cooling", ReflowPhase::Cool, 250, 50,  60)
+  ReflowPhase("ramp",    ReflowPhase::Ramp, 175, 210, 40),
+  ReflowPhase("reflow",  ReflowPhase::Peak, 210, 230, 30),
+  ReflowPhase("cooling", ReflowPhase::Cool, 230, 50,  60)
 };
 
 
@@ -109,8 +109,7 @@ void loop() {
   //
   // here's where you can do other things
   //
-  delay(500); // replace this with whatever
-  tick_it++;
+  delay(500); 
   //
 
   // check for conversion complete and read temperature
@@ -125,7 +124,6 @@ void loop() {
     display.update_current_T(int(T), in_range);  
   } else {
     display.update_current_T(9000, false);  
-    conv_ok = false;
     //Serial.println("Conversion not complete!");
   }
 
@@ -160,7 +158,7 @@ void loop() {
       int const next_T = (reflow_step + 1 < n_steps) ? reflow_profile[reflow_step+1].Tend : 9000;
       display.update_T_ranges(T0, T1, next_T);
       display.update_icon((int)(reflow_profile[reflow_step].gradient));
-    } else if (reflow_step == 4 && (display.clock() < 0 || T < reflow_profile[4].Tend)) {        // cooling complete
+    } else if (reflow_step == 4 && T < reflow_profile[4].Tend) {        // cooling complete
       reflow_step = -1;
       t_sec = 0;
       to_standby();

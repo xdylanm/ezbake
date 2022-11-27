@@ -19,7 +19,10 @@ void right_align(int n, char* msg, String const& sval)
   if (sval.length() > n) {
     return;
   }
-  int startpos = n-sval.length();           
+  int const startpos = n-sval.length();           
+  for (int i = 0; i < startpos; ++i) {
+    msg[i] = ' ';
+  }  
   for (int i = 0; i < sval.length(); ++i) {
     msg[startpos+i] = sval.charAt(i);
   }
